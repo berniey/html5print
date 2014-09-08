@@ -37,15 +37,16 @@ class HTMLBeautifier(BeautifierBase):
     @classmethod
     def beautify(cls, html, indent=2, encoding=None, formatter="html5"):
         """Pretty print html with indentation of `indent` per level
+
         :param html:      html as string
         :param indent:    width of indentation
         :param encoding:  encoding of html
         :param formatter: formatter to use by bs4.  use `lxml` if you want
                           HTML4 output
-        :return :         beautified html
+        :returns:         beautified html
 
+        >>> # pretty print HTML
         >>> from html5print import HTMLBeautifier
-
         >>> html = '<title>Testing</title><body><p>Some Text</p>'
         >>> print(HTMLBeautifier.beautify(html))
         <html>
@@ -62,6 +63,8 @@ class HTMLBeautifier(BeautifierBase):
         </html>
         <BLANKLINE>
 
+        >>> # pretty print HTML with embedded CSS and Javascript
+        >>> from html5print import HTMLBeautifier
         >>> html = '''<html><head><title>Testing</title>
         ... <style>p { color:red; font-weight:nornal}
         ... h1{color:green;}
@@ -104,19 +107,20 @@ class HTMLBeautifier(BeautifierBase):
         """
         soup = bs4.BeautifulSoup(html, 'html5lib')
         html = soup.prettify(formatter=formatter)
-        html = cls.prettifyWithIndent(html, indent)
+        html = cls._prettifyWithIndent(html, indent)
         html = JSBeautifier.beautifyTextInHTML(html, indent, encoding)
         html = CSSBeautifier.beautifyTextInHTML(html, indent, encoding)
         return html
 
     @classmethod
-    def prettifyWithIndent(cls, html, indent=2):
+    def _prettifyWithIndent(cls, html, indent=2):
         """Prettify bs4.prettify output with `indent`
+        Note: Assumed `html` is input from bs4.prettify, which has indent
+              width of 1.
+
         :param html:    html as string
         :param indent:  width of indentation
-        :return :       beautified html with bs4.prettify() error fixed
-        Note: Assumed `html` is input from bs4.prettify, which has indent
-        width of 1.
+        :returns:       beautified html with bs4.prettify() error fixed
         """
         final = []
         lastNonBlankLine = ''

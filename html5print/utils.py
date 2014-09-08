@@ -19,6 +19,7 @@ from __future__ import unicode_literals, absolute_import
 import os
 import sys
 import re
+import types
 import warnings
 
 
@@ -32,32 +33,91 @@ except ImportError:
         raise
 
 
-def decodeText(bstr, encoding=None):
-    """Decoding `bstr` to `encoding`.  If `encoding` is None.  Encoding
-    will be guessed
+def decodeText(text, encoding=None):
+    """Decoding `text` to `encoding`.  If `encoding` is None, encoding
+    will be guessed.
+
+    **Note**: `encoding` provided will be disregarded if it causes decoding
+    error
+
+    :param text:     string to be decoded
+    :param encoding: encoding scheme of `text`.  guess by system if None
+    :returns:        new decoded text as unicode
+
+    >>> import sys
+    >>> from html5print import decodeText
+    >>> s = 'Hello! 您好! こんにちは! halló!'
+    >>> output = decodeText(s)
+    >>> print(output)
+    Hello! 您好! こんにちは! halló!
+    >>> if sys.version > '3':
+    ...    unicode = str
+    >>> isinstance(output, unicode)
+    True
     """
-    guess = False
+    ## if `text` is unicode, not much to convert
+    if isUnicode(text):
+        return text
+
+    ## Now for non unicode text, try decode with provided encoding
     if encoding:
         try:
-            encodingToUse = encoding
-            text = bstr.decode(encoding, 'strict')
-        except UnicodeEncodeError as e:
+            text = text.decode(encoding, 'strict')
+        except (UnicodeEncodeError, UnicodeDecodeError) as e:
             # incorrect `encoding` set by caller, so let's guess first
-            t = "Error in decoding as '{}' at pos ({}, {}), will try to guess."
-            warnings.warn(t.format(e.encoding, e.start, e.end))
-            guess = True
-    if guess or not encoding:
-        detected = cdetector.detect(bstr)
-        detectedEncoding = detected['encoding']
-        encodingToUse = detectedEncoding
-        if not detectedEncoding:
-            # when all things failed, go 'utf-8' for now
-            # TODO: find another way
-            encodingToUse = 'utf-8'
-        text = bstr
-        if type(bstr) == type(bytes()):
-            text = bstr.decode(encodingToUse, 'replace')
-    return text, encodingToUse
+            warnings.warn(str(e))
+        else:
+            return text
+
+    ## no encoding or decoding with provided `encoding` failed
+    detected = cdetector.detect(text)
+    detectedEncoding = detected['encoding']
+    encodingToUse = detectedEncoding
+    if not detectedEncoding:
+        # when all things failed, go 'utf-8' for now
+        # TODO: find another way
+        encodingToUse = 'utf-8'
+    try:
+        text = text.decode(encodingToUse, 'ignore')
+    except UnicodeEncodeError as e:
+        msg = str(e) + ' Encodeing used: {}'.format(encodingToUse)
+        warnings.warn(msg)
+
+    return text
+
+
+def isUnicode(text):
+    """Return True if `text` is unicode. False otherwise.  Note that because
+    the function has to work on both Python 2 and Python 3, u'' cannot be used
+    in doctest.
+
+    :param text:  string to check if it is unicode
+    :returns:     | **True** if `text` is unicode,
+                  | **False** otherwise
+
+    >>> import sys
+    >>> if sys.version > '3':
+    ...     isUnicode(bytes('hello', 'ascii'))
+    ... else:
+    ...     isUnicode(bytes('hello'))
+    False
+
+    >>> import sys
+    >>> if sys.version > '3':
+    ...     unicode = str
+    >>> isUnicode(unicode('hello'))
+    True
+    """
+    if sys.version > '3':
+        if isinstance(text, str):
+            return True
+        else:
+            return False
+    else:
+        if isinstance(text, str):
+            return False
+        else:
+            return True
 
 
 class BeautifierBase(object):
@@ -69,9 +129,9 @@ class BeautifierBase(object):
                                   re.MULTILINE | re.DOTALL | re.IGNORECASE)
 
     @staticmethod
-    def stripHTMLComments(text):
+    def _stripHTMLComments(text):
         """Removing HTML Comments '<!-- ... -->' out of `text`
-        :return : a tuple with the following fields
+        :returns: a tuple with the following fields
                     - text with comment(s) removed
                     - removed comment(s)
         """
@@ -102,7 +162,7 @@ class BeautifierBase(object):
         return (textWithoutComments, os.linesep.join(comments))
 
     @classmethod
-    def findAndReplace(cls, text, regExp, bfunc, bfuncArgs, indent=2):
+    def _findAndReplace(cls, text, regExp, bfunc, bfuncArgs, indent=2):
         """Find and replace `text` with what returned by `regExp` by
         beautifing function `bfunc` and params `bfuncArgs`.
 
@@ -117,7 +177,7 @@ class BeautifierBase(object):
         :param bfuncArgs: list of arguments for `bfunc`
         :param indent:    width of indentation for section of text requires
                           beautifing
-        :return :         beautified text
+        :returns:         beautified text
         """
         final = text
         sections = []
@@ -132,7 +192,7 @@ class BeautifierBase(object):
                 start, end = mo.span()
                 start += adjustment
                 thisIndent = ' ' * (len(spaces) + indent)
-                newScript, comments = cls.stripHTMLComments(script)
+                newScript, comments = cls._stripHTMLComments(script)
                 params = (newScript,) + bfuncArgs
                 lines = [thisIndent + l for l in bfunc(*params).splitlines()]
                 lines.extend([thisIndent + l for l in comments.splitlines()])

@@ -1,0 +1,6 @@
+include *.md
+include *.py
+include pytest.in
+include README.rst
+include LICENSE
+include hhtml5pprint

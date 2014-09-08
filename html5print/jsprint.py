@@ -20,25 +20,25 @@ import os
 import re
 import jsbeautifier
 
-from .utils import BeautifierBase
+from .utils import BeautifierBase, decodeText
 
 
 class JSBeautifier(BeautifierBase):
-    """Javascript Beautifier - A wrapper class of jsbeautifier"""
+    """A Javascript Beautifier that pretty print Javascript.  It uses
+    jsbeautifier"""
 
     @classmethod
     def beautify(cls, js, indent=2, encoding=None):
-        """beautifying javascript `js` by reindending to width of `indent` per
-        level.  `js` is expected to be a valid javascript (i.e. no html
-        comment(s) tag <!-- ... -->).
+        """Prettifing `js` by reindending to width of indent per level. `js`
+        is expected to be a valid Javascipt
+
         :param js:       a valid javascript as multiline string
+        :param indent:   width od indentation per level
         :param encoding: expected encoding of `js`.  If None, it will be
                          guesssed
-        :param indent:   width od indentation per level
-        :return :        reindented javascript
+        :returns:        reindented javascript
 
         >>> from html5print import JSBeautifier
-
         >>> js = '''function myFunction() {
         ... document.getElementById("demo").innerHTML = "Paragraph changed.";
         ... }'''
@@ -46,24 +46,24 @@ class JSBeautifier(BeautifierBase):
         function myFunction() {
           document.getElementById("demo").innerHTML = "Paragraph changed.";
         }
-
         """
         opts = jsbeautifier.default_options()
         opts.indent_size = indent
-        return jsbeautifier.beautify(js, opts)
+        result = jsbeautifier.beautify(decodeText(js), opts)
+        return result
 
     @classmethod
     def beautifyTextInHTML(cls, html, indent=2, encoding=None):
-        """Beautifying javascript within the <script></script> tag.  Note that
-        html comment(s), i.e. <!-- ... --> will be moved to the end of the
-        block.
+        """Beautifying Javascript within the ``<script></script> tag``. HTML
+        comments(s) (i.e. ``<!-- ...  -->``) within the script tag, if any,
+        will be moved to the end of the tag block
+
         :param html:      html as string
         :param indent:    width of indentation for embedded javascript in HTML
-        :return :         html with javascript beautified (i.e. text
-                          within <script>...</script>
+        :returns:         html with javascript beautified (i.e. text
+                          within ``<script>...</script>``)
 
         >>> from html5print import JSBeautifier
-
         >>> js = '''<html><body>
         ...   <script>function myFunction() {
         ... document.getElementById("demo").innerHTML = "Paragraph changed.";
@@ -83,5 +83,5 @@ class JSBeautifier(BeautifierBase):
         """
         opts = jsbeautifier.default_options()
         opts.indent_size = indent
-        return cls.findAndReplace(html, cls.reIndentAndScript,
+        return cls._findAndReplace(html, cls.reIndentAndScript,
                                   jsbeautifier.beautify, (opts,), indent)

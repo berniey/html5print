@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals, absolute_import
 
 import pytest
@@ -15,43 +17,24 @@ def decodeText_func():
 
 
 @pytest.fixture
-def script_object():
+def cssBeautifer_func():
     import os
     import sys
     abspath = os.path.abspath('.')
-    spath = os.path.join(abspath, 'test')
     sys.path.insert(0, abspath)
-    from script import Main
-    return Main()
+    from html5print.cssprint import CSSBeautifier
+    return CSSBeautifier.beautify
 
 
-@pytest.fixture
-def fixture_dir():
-    import os
-    import sys
-    abspath = os.path.abspath('.')
-    return os.path.join(abspath, 'html5print', 'test', 'fixture')
+def test_decode_unicode(decodeText_func, cssBeautifer_func):
+    data = """.para { margin: 10px 20px; /* Cette règle contrôle l'espacement
+    de tous les côtés */ }"""
+    expected = """
+    .para {
+       margin              : 10px 20px; /* Cette règle contrôle l'espacement
+         de tous les côtés */
+    }
+    """
+    assert cssBeautifer_func(decodeText_func(data)[0]), expected
 
 
-def test_decodeText(decodeText_func, script_object, fixture_dir):
-    abspath = fixture_dir
-    files = ['unicode_sample' + ext for ext in ('.html', '.css')]
-    files = [os.path.join(abspath, f) for f in files]
-    expectedEncoding = ['GB2312'] * 2
-    for f, ex in zip(files, expectedEncoding):
-        data = script_object.read(f)
-        data, encoding = decodeText_func(data)
-        assert encoding == ex, f
-
-
-@pytest.mark.xfail
-def test_decodeText_failed(decodeText_func, fixture_dir):
-    # autodedect within test_decodeText faild.  Should
-    # have detected 'GB2312', but detected 'ISO-8859-2'
-    abspath = fixture_dir
-    file = os.path.join(abspath, 'failed_detection.js')
-    expected = 'GB2312'
-    with open(file) as fh:
-        data, encoding = decodeText_func(fh.read())
-        emsg = 'Expected {}, Got {} - {}'.format(expected, encoding, file)
-        assert encoding == expected, emsg
