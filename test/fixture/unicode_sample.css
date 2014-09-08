@@ -1,0 +1,42 @@
+@charset "gb2312";
+img{border:0}
+body{padding:0;margin:0}
+.focus_area{width:950px;margin:0 auto;zoom:1;font-size:12px;text-align:left;}
+.focus_area:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+.focus_area a{color:#333;text-decoration:none}
+.focus_area a:hover{color:#d80100;text-decoration:underline}
+.focus_area em{font-style:normal}
+.focus_area_1002{width:1002px;}
+.focus_links_bar{margin-top:1px;background:url(http://simg.f.itc.cn/common/img/focus_indexNav.gif) no-repeat 0 0;height:22px;padding:0 0 0 37px;display:inline-block}
+.focus_links_bar .f_l_b_bg{background:url(http://simg.f.itc.cn/common/img/focus_indexNav.gif) no-repeat 100% 0;height:20px;line-height:20px;padding:2px 10px 0 0;display:inline-block}
+.focus_links_bar a,.focus_links_bar a:hover{margin:0 4px;}
+/*--首页标准头--*/
+#focus_indexNav{background:#f4f4f4;height:26px;}
+#focus_indexNav .l{width:560px;float:left}
+#focus_indexNav .r{padding:1px 8px 0 0;width:329;float:right}
+#focus_indexNav .l em{background:url(http://simg.f.itc.cn/common/img/swsy.gif) no-repeat 0 50%;padding:0 0 0 16px;display:inline-block;float:right; line-height:26px;}
+#focus_indexNav .focus_links_bar{float:left;}
+#focus_indexNav .focus_links_bar .f_l_b_bg,#articleNav .focus_links_bar .f_l_b_bg{ background-position:445px 0;padding-right:5px;}
+#focus_indexNav .sohu_logo{float:left;border:1px solid #fdb103;border-left:0;background:#fecd06;width:82px;margin-top:1px;height:20px;}
+/*--二级页面--*/
+#focus_logoNav{height:37px;}
+#focus_logoNav .l{padding:5px 0 0 9px;float:left}
+#focus_logoNav .r{float:right;text-align:right;padding:11px 11px 0 0;line-height:26px;}
+/*--最终页--*/
+#articleNav{width:980px;height:37px}
+#articleNav .left{padding:5px 0 0 9px;float:left;width:585px;height:32px;}
+#articleNav .left span{margin-right:30px;_margin-right:28px;float:left;display:inline-block;}
+#articleNav .left p{padding:12px 0 0 0;margin:0}
+#articleNav .left p a{font-size:12px}
+#articleNav .r{width:362px;float:right}
+#articleNav .focus_links_bar{float:left;margin-top:8px;}
+#articleNav .sohu_logo{float:left;border:1px solid #fdb103;border-left:0;background:#fecd06;width:82px;margin-top:8px;height:20px;}
+/*--最终页_家居--*/
+#articleNav .home_logo{margin-top:3px;}
+/*--标准尾--*/
+#fouse_foot{margin:10px auto;text-align:center;color:#000;font-size:12px;}
+#fouse_foot p{line-height:22px;padding:0;margin:0}
+#fouse_foot a{color:#000; text-decoration:none}
+#fouse_foot a:hover{color:#d80100; text-decoration:underline}
+/*--flash mast for ad--*/
+.ad_flash{margin-left:auto;margin-right:auto;position:relative;*margin-left:0;*margin-right:0;}

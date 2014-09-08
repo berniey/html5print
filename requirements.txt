@@ -1,0 +1,5 @@
+beautifulsoup4>=4.3.2
+chardet>=2.2.1
+html5lib>=0.999
+jsbeautifier>=1.5.1
+tinycss2>=0.4

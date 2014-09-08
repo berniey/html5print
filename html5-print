@@ -1,0 +1,240 @@
+#!/usr/bin/env python2.7
+# -*- coding: utf-8 -*-
+#
+# Copyright 2014 Bernard Yue
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+from __future__ import unicode_literals, absolute_import
+
+__prog__ = 'html5-print'
+
+# standard libraries
+import os
+import sys
+import argparse
+import codecs
+import textwrap
+import warnings
+if sys.version >= '3':
+    from urllib.parse import urlparse
+else:
+    from urlparse import urlparse
+
+# third parties libraries
+import requests
+
+# my libraries
+import html5print
+
+
+class Main(object):
+    """Application Class"""
+
+    def beautifyHTML(self, text, indent=2, encoding=None,
+                     formatter="minimal"):
+        """Pretty print html with indentation of `indent` per level
+        :param text:      html as string
+        :param indent:    width of indentation
+        :param encoding:  encoding of `text`
+        :param formatter: formatter to use by bs4
+        :return :         beautified `text`
+        """
+        return html5print.HTMLBeautifier.beautify(text, indent=indent,
+                                                  encoding=encoding,
+                                                  formatter=formatter)
+
+    def beautifyJS(self, text, indent=2, encoding=None):
+        """beautifying javascript `text` by reindending to width of `indent`
+        per level  `text` is expected to be a valid javascript (i.e. no html
+        comment(s) tag <!-- ... -->).
+        :param text:     valid javascript as string
+        :param indent:   width of indentation
+        :param encoding: expected encoding of `text`.  If None, it will be
+                         guesssed
+        :return :        reindented javascript
+        """
+        return html5print.JSBeautifier.beautify(text, indent=indent,
+                                                encoding=encoding)
+
+    def beautifyCSS(self, text, indent=2, encoding=None):
+        """beautifying css `text` by reindending to width of `indent` per
+        level.  `text` is expected to be a valid CSS (i.e. no html
+        comment(s) tag <!-- ... -->).
+        :param text:     valid CSS as multiline string
+        :param indent:   width od indentation per level
+        :param encoding: expected encoding of `text`.  If None, it will be
+                         guesssed
+        :return :        reindented CSS
+        """
+        return html5print.CSSBeautifier.beautify(text, indent=indent,
+                                                 encoding=encoding)
+
+    def run(self):
+        """main entry point of this script
+        :return :       None
+        """
+        self.args = self.parseArgs()
+        args = self.args
+        self.process(args.filetype, args.infile, args.outfile,
+                     args.indent_width, args.encoding)
+
+    def parseArgs(self):
+        """parsing input arguments
+        :return :       a parser.parse_arg() object
+        """
+        formatter_class = argparse.RawDescriptionHelpFormatter
+        desc = textwrap.dedent("""\
+                Beautify HTML5, CSS, Javascript - Version {} (By {})
+                This tool reformat the input and return a beautified version,
+                in unicode.
+                """.format(html5print.__version__, html5print.__author__))
+        parser = argparse.ArgumentParser(prog=__prog__,
+                                         formatter_class=formatter_class,
+                                         description=desc)
+        parser.add_argument('infile', type=str,
+                            help='filename | url | -, a dash, which'
+                            ' represents stdin')
+        parser.add_argument('-o', '--output', dest='outfile',
+                            default='',
+                            help='filename for formatted html, stdout'
+                            ' if omitted')
+        parser.add_argument('-s', '--indent-width', dest='indent_width',
+                            type=int, action='store', default=2,
+                            help='number of space for indentation, default 2')
+        parser.add_argument('-e', '--encoding', dest='encoding', type=str,
+                            action='store', default=None,
+                            help='encoding of input, default UTF-8')
+        parser.add_argument('-t', '--filetype', dest='filetype', type=str,
+                            choices=['html', 'js', 'css'],
+                            action='store', default='HTML',
+                            help='type of file to parse, default html')
+        parser.add_argument('-v', '--version', action='version',
+                            version='%(prog)s Version ' +
+                            html5print.__version__)
+        return parser.parse_args()
+
+    def process(self, filetype, infile, outfile, indent, encoding):
+        """main process workflow
+        :param filetype: type of file to parse (html, js or css)
+        :param infile:   name of input file, '-' for stdin
+        :param outfile:  name of output file, stdout if empty
+        :param indent:   width of an indent level
+        :param encoding: encoding of infile
+        :return :        None
+        """
+        filetype = filetype.upper()
+        text = self.read(infile)
+        text, detectedEncoding = html5print.decodeText(text, encoding)
+        if filetype == 'HTML':
+            output = self.beautifyHTML(text, indent, encoding, "html5")
+        elif filetype == 'CSS':
+            output = self.beautifyCSS(text, indent,
+                                      detectedEncoding) + os.linesep
+        else:
+            # javascript
+            output = self.beautifyJS(text, indent,
+                                     detectedEncoding) + os.linesep
+        self.write(outfile, output)
+
+    def read(self, filename):
+        """read content from filename, and stdin if filename = ''
+        :return :       html as string
+        """
+        if filename == '-':
+            filename = ''
+            sys.stderr.write('Press Ctrl-D when finished' + os.linesep)
+            sys.stderr.flush()
+
+        parsed = urlparse(filename)
+        if parsed.scheme in ('', 'file'):
+            if sys.version >= '3':
+                data = self.py3GetData(filename)
+            else:
+                data = self.py2GetData(filename)
+        else:
+            r = requests.get(filename)
+            data = r.content
+        return data
+
+    def py2GetData(self, filename):
+        """read all contains in `filename` and return a byte stream.  Python
+        2.x version.
+        :param filename: name of file to read data from. `-` represents stdin
+        :return :        a byte stream (i.e. b'...')
+        """
+        data = ''
+        if filename:
+            with open(filename, 'rU') as fh:
+                data = fh.read()
+        else:
+            sys.stdin.flush()
+            data = sys.stdin.read()
+        return data
+
+    def py3GetData(self, filename):
+        """read all contains in `filename` and return a byte stream.  Python
+        3.x version.
+        :param filename: name of file to read data from. `-` represents stdin
+        :return :        a byte stream (i.e. b'...')
+        """
+        data = ''
+        if filename:
+            with open(filename, 'rb') as fh:
+                data = fh.read()
+        else:
+            sys.stdin.flush()
+            data = sys.stdin.buffer.read()
+        return data
+
+    def write(self, filename, data):
+        """write `data` to `filename`, if 'filename` is '', write to stdout
+        :return :       None
+        """
+        if sys.version >= '3':
+            self.py3WriteData(data, filename)
+        else:
+            self.py2WriteData(data, filename)
+
+    def py2WriteData(self, data, filename):
+        """write unicode to file, python 2.x version"""
+        if filename:
+            with codecs.open(filename, 'wU', encoding='utf-8') as fh:
+                fh.write(data)
+        else:
+            sys.stdout = codecs.getwriter("utf-8")(sys.stdout)
+            sys.stdout.write(data)
+            sys.stdout.flush()
+
+    def py3WriteData(self, data, filename):
+        """write unicode to file, python 3.x version"""
+        if filename:
+            with open(filename, 'w', encoding='utf-8') as fh:
+                fh.write(data)
+        else:
+            sys.stdout.write(data)
+            sys.stdout.flush()
+
+
+if __name__ == '__main__':
+    try:
+        Main().run()
+    except IOError as e:
+        if e.strerror.lower() == 'broken pipe':
+            exit(0)
+        raise
+    except LookupError as e:
+        print(e.message)
+        exit(2)
+    else:
+        exit(0)

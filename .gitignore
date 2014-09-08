@@ -1,0 +1,10 @@
+.coverage
+*.sw[op]
+*.~
+*.py[co]
+__pycache__
+htmlcov
+dist
+build
+MANIFEST
+html5print.egg-info
