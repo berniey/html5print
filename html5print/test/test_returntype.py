@@ -95,5 +95,3 @@ def test_js_beautify_encoding(js_beautify, unicode_type):
     assert isinstance(func(text), unicode_type)
     text = b'function test(param) { return param; }'
     assert isinstance(func(text), unicode_type)
-
-

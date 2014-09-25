@@ -17,15 +17,48 @@
 from __future__ import unicode_literals, absolute_import
 
 import os
+import sys
 import re
-import jsbeautifier
+import slimit
 
 from .utils import BeautifierBase, decodeText
 
 
 class JSBeautifier(BeautifierBase):
-    """A Javascript Beautifier that pretty print Javascript.  It uses
-    jsbeautifier"""
+    """A Javascript Beautifier that pretty print Javascript"""
+
+    @classmethod
+    def _reindenting(cls, js, indent=2, srcIndent=2):
+        """indenting `js` using `indent` as width of indent per level.  This
+        function if for internal use only.
+
+        :param js:        pre-indent js
+        :param indent:    indent width per level of resulting js
+        :param srcIndent: current indent width per level of `js`
+        :returns:         indented javascript with indent width of `indent` per
+                          level
+        """
+        firstLine = js.split('\n', 1)[0]
+        offset = len(firstLine) - len(firstLine.lstrip())
+        result = []
+        lastLevel = 0
+        for line in js.splitlines():
+            extraIndent = 0
+            text = line.lstrip()
+            currIndent = len(line) - len(text)
+            if currIndent < lastLevel * srcIndent + offset:
+                # level down
+                lastLevel = (currIndent - offset) // srcIndent
+            elif currIndent == (lastLevel + 1) * srcIndent + offset:
+                # one level up
+                lastLevel += 1
+            elif currIndent > (lastLevel + 1) * srcIndent + offset:
+                # not indenet to next level but continuation from previous line
+                # XXX: not handling param alignment with bracket on last line
+                extraIndent = currIndent - offset - lastLevel * srcIndent
+            finalIndent = offset + lastLevel * indent + extraIndent
+            result.append(' ' * finalIndent + text)
+        return '\n'.join(result)
 
     @classmethod
     def beautify(cls, js, indent=2, encoding=None):
@@ -46,11 +79,17 @@ class JSBeautifier(BeautifierBase):
         function myFunction() {
           document.getElementById("demo").innerHTML = "Paragraph changed.";
         }
+
+        >>> print(JSBeautifier.beautify(js, 4))
+        function myFunction() {
+            document.getElementById("demo").innerHTML = "Paragraph changed.";
+        }
+
         """
-        opts = jsbeautifier.default_options()
-        opts.indent_size = indent
-        result = jsbeautifier.beautify(decodeText(js), opts)
-        return result
+        parser = slimit.parser.Parser()
+        tree = parser.parse(decodeText(js))
+        text = tree.to_ecma()
+        return cls._reindenting(text, indent)
 
     @classmethod
     def beautifyTextInHTML(cls, html, indent=2, encoding=None):
@@ -81,7 +120,5 @@ class JSBeautifier(BeautifierBase):
         </body></html>
         <BLANKLINE>
         """
-        opts = jsbeautifier.default_options()
-        opts.indent_size = indent
         return cls._findAndReplace(html, cls.reIndentAndScript,
-                                  jsbeautifier.beautify, (opts,), indent)
+                                   cls.beautify, (indent,), indent)

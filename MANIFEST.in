@@ -1,6 +1,12 @@
-include *.md
-include *.py
-include pytest.in
+recursive-include html5print *.py
+recursive-include test *.py
+include html5-print
+include html5print/test/*.py
+include html5print/test/fixture/*
+include test/script.py
+include test/fixture/*
+include requirements.txt
+include pytest.ini
+include CHANGELOG.rst
 include README.rst
 include LICENSE
-include hhtml5pprint

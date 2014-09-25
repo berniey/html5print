@@ -31,7 +31,7 @@ tool, ended up created this module.  Hope it helps you!
 
 Key features:
 
-  * Pretty print not only HTML but also embedded CSS and JavaScript within HTML
+  * Pretty print HTML as well as embedded CSS and JavaScript within it
   * Pretty print pure CSS and JavaScript
   * Try to fix fragmented HTML5
   * Try to fix HTML with broken unicode encoding
@@ -53,7 +53,7 @@ Uninstallation
 .. code-block:: sh
 
     $ pip uninstall html5print
-    $ pip uninstall bs4 html5lib jsbeautifier tinycss2 requests chardet
+    $ pip uninstall bs4 html5lib slimit tinycss2 requests chardet
 
 
 Command Line Tool

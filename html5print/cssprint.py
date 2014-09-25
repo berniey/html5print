@@ -409,4 +409,4 @@ class CSSBeautifier(BeautifierBase):
         </body></html>
         """
         return cls._findAndReplace(html, cls.reIndentAndStyle,
-                                  CSSBeautifier.beautify, (indent,), indent)
+                                   cls.beautify, (indent,), indent)

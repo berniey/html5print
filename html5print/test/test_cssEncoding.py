@@ -36,5 +36,3 @@ def test_decode_unicode(decodeText_func, cssBeautifer_func):
     }
     """
     assert cssBeautifer_func(decodeText_func(data)[0]), expected
-
-

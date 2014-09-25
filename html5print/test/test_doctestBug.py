@@ -32,4 +32,3 @@ def test_the_failed_doctest_case(decodeText_func, unicode_func):
     data += b' Hall\xc3\xb3!'
     got = decodeText_func(data)
     assert got == data.decode('utf-8')
-

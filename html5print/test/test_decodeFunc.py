@@ -71,15 +71,15 @@ def test_decodeText_utf8(decodeText_func, unicode_func):
     data = b'\xe4\xba\xba\xe7\x94\x9f'
     data = data.decode('utf-8')
 
-    ## no encodeing given
+    # no encodeing given
     got = decodeText_func(data)
     assert got == unicode_func('\u4eba\u751f')
 
-    ## correct encodeing given
+    # correct encodeing given
     got = decodeText_func(data, 'utf-8')
     assert got == unicode_func('\u4eba\u751f')
 
-    ## incorrect encodeing given
+    # incorrect encodeing given
     got = decodeText_func(data, 'utf-32')
     assert got == unicode_func('\u4eba\u751f')
 
@@ -89,15 +89,15 @@ def test_decodeText_utf16(decodeText_func, unicode_func):
     data = b'\xff\xfe\xbaN\x1fu'
     data = data.decode('utf-16')
 
-    ## no encodeing given
+    # no encodeing given
     got = decodeText_func(data)
     assert got == unicode_func('\u4eba\u751f')
 
-    ## correct encodeing given
+    # correct encodeing given
     got = decodeText_func(data, 'utf-16')
     assert got == unicode_func('\u4eba\u751f')
 
-    ## incorrect encodeing given
+    # incorrect encodeing given
     got = decodeText_func(data, 'utf-8')
     assert got == unicode_func('\u4eba\u751f')
 
@@ -107,16 +107,14 @@ def test_decodeText_utf32(decodeText_func, unicode_func):
     data = b'\xff\xfe\x00\x00\xbaN\x00\x00\x1fu\x00\x00'
     data = data.decode('utf-32')
 
-    ## no encodeing given
+    # no encodeing given
     got = decodeText_func(data)
     assert got == unicode_func('\u4eba\u751f')
 
-    ## correct encodeing given
+    # correct encodeing given
     got = decodeText_func(data, 'utf-32')
     assert got == unicode_func('\u4eba\u751f')
 
-    ## incorrect encodeing given
+    # incorrect encodeing given
     got = decodeText_func(data, 'utf-16')
     assert got == unicode_func('\u4eba\u751f')
-
-

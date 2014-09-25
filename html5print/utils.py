@@ -55,11 +55,11 @@ def decodeText(text, encoding=None):
     >>> isinstance(output, unicode)
     True
     """
-    ## if `text` is unicode, not much to convert
+    # if `text` is unicode, not much to convert
     if isUnicode(text):
         return text
 
-    ## Now for non unicode text, try decode with provided encoding
+    # Now for non unicode text, try decode with provided encoding
     if encoding:
         try:
             text = text.decode(encoding, 'strict')
@@ -69,7 +69,7 @@ def decodeText(text, encoding=None):
         else:
             return text
 
-    ## no encoding or decoding with provided `encoding` failed
+    # no encoding or decoding with provided `encoding` failed
     detected = cdetector.detect(text)
     detectedEncoding = detected['encoding']
     encodingToUse = detectedEncoding
