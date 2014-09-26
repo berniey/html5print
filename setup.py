@@ -23,6 +23,7 @@ _classifiers = '''
         Operating System :: POSIX
         Programming Language :: Python
         Programming Language :: Python :: 2
+        Programming Language :: Python :: 2.6
         Programming Language :: Python :: 2.7
         Programming Language :: Python :: 3
         Programming Language :: Python :: 3.2
@@ -55,7 +56,8 @@ with open('requirements.txt') as fh:
 
 
 class PyTest(TestCommand):
-    user_options = [('pytest-args=', 'a', "--doctest-module --ignore=setup.py")]
+    user_options = [('pytest-args=', 'a',
+                     '--doctest-module --ignore=setup.py -m "not remote"')]
     if sys.version < '3':
         temp = []
         for t in user_options:
