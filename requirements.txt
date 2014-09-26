@@ -3,4 +3,4 @@ chardet>=2.2.1
 html5lib>=0.999
 requests>=2.3.5
 slimit>=0.8.1
-tinycss2>=0.4
+tinycss2==0.4
