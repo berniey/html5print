@@ -18,6 +18,7 @@ from __future__ import unicode_literals, absolute_import
 
 import os
 import tinycss2
+import distutils.version
 
 from .utils import BeautifierBase, decodeText, isUnicode
 
@@ -25,6 +26,33 @@ from .utils import BeautifierBase, decodeText, isUnicode
 class CSSBeautifier(BeautifierBase):
     """A CSS Beautifier that pretty print CSS.  It loosely supports CSS3.
     """
+
+    @staticmethod
+    def _tinycss2ParserFlag():
+        """return the keyword params required for including comments during CSS
+        parsing
+
+        :returns:    a dictionary objects with keywords for including comments
+
+        >>> import tinycss2
+        >>> original = tinycss2.VERSION
+
+        >>> tinycss2.VERSION = '0.4'
+        >>> CSSBeautifier._tinycss2ParserFlag()
+        {'preserve_comments': True}
+
+        >>> original = tinycss2.VERSION
+        >>> tinycss2.VERSION = '0.5'
+        >>> CSSBeautifier._tinycss2ParserFlag()
+        {}
+
+        >>> tinycss2.VERSION = original  # remove side effect of doctest...
+        """
+        LooseVersion = distutils.version.LooseVersion
+        if LooseVersion(tinycss2.VERSION) <= LooseVersion('0.4'):
+            return dict(preserve_comments=True)
+        else:
+            return {}
 
     @staticmethod
     def _foundSelector(node):
@@ -342,7 +370,10 @@ class CSSBeautifier(BeautifierBase):
         }
         """
         text = decodeText(css)
-        ast = tinycss2.parse_component_value_list(text, preserve_comments=True)
+        extra = cls._tinycss2ParserFlag()
+        #print(extra)
+        #print tinycss2.VERSION
+        ast = tinycss2.parse_component_value_list(text, **extra)
         parsed = []
         for ast, isCSSRule in cls._getCSSObjects(ast):
             if isCSSRule:
