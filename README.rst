@@ -266,23 +266,13 @@ Pretty Print JavaScript
 
 Testing
 -------
-You can either run the standalone ``runtests.py`` or standard
-``python setup.py test``.  The module uses
-`pytest <http://pytest.org/latest/>`_.
+The module uses `pytest <http://pytest.org/latest/>`_.
 
 .. code-block:: sh
 
     $ tar zxf html5print-0.1.tar.gz
     $ cd html5print-0.1
     $ python setup.py test
-
-or
-
-.. code-block:: sh
-
-    $ tar zxf html5print-0.1.tar.gz
-    $ cd html5print-0.1
-    $ runtests.py
 
 
 License
