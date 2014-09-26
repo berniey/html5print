@@ -158,7 +158,7 @@ class BeautifierBase(object):
                     # nested comment)
                     # for this we take maximum chunk as comment
                     textWithoutComments += tmp[-1]
-                    comments.append(sep[0] + u''.join(tmp[:-1]) + sep[-1])
+                    comments.append(sep[0] + ''.join(tmp[:-1]) + sep[-1])
         return (textWithoutComments, os.linesep.join(comments))
 
     @classmethod

@@ -342,7 +342,7 @@ class CSSBeautifier(BeautifierBase):
         }
         """
         text = decodeText(css)
-        ast = tinycss2.parse_component_value_list(text, True)
+        ast = tinycss2.parse_component_value_list(text, preserve_comments=True)
         parsed = []
         for ast, isCSSRule in cls._getCSSObjects(ast):
             if isCSSRule:
