@@ -179,8 +179,8 @@ Create valid HTML5 document from HTML fragment:
 Python API
 ----------
 
-This module requires Python 2.7+ (should work for Python
-2.6 but was not tested).
+This module requires Python 2.6+ (should work for Python
+3.1 and 3.2 but was not tested).
 
 Pretty Print HTML
 *****************

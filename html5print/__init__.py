@@ -69,15 +69,15 @@ Installation
 
 .. code-block:: sh
 
-    $ pip install html5print
+    $ [sudo] pip install html5print
 
 Uninstallation
 --------------
 
 .. code-block:: sh
 
-    $ pip uninstall html5print
-    $ pip uninstall bs4 html5lib slimit tinycss2 requests chardet
+    $ [sudo] pip uninstall html5print
+    $ [sudo] pip uninstall bs4 html5lib slimit tinycss2 requests chardet
 
 
 Command Line Tool
