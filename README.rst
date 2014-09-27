@@ -13,7 +13,7 @@ with two parts:
    :target: https://pypi.python.org/pypi/html5print/
    :alt: Latest Version
 
-.. image:: https://raw.githubusercontent.com/berniey/html5print/master/docs/_static/doc-0.2.3-brightgreen.png
+.. image:: https://raw.githubusercontent.com/berniey/html5print/master/docs/_static/doc-0.1-brightgreen.png
    :target: https://pythonhosted.org/html5print/
    :alt: Documentation
 

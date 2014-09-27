@@ -34,25 +34,24 @@ class CSSBeautifier(BeautifierBase):
 
         :returns:    a dictionary objects with keywords for including comments
 
-        >>> import tinycss2
-        >>> original = tinycss2.VERSION
-
-        >>> tinycss2.VERSION = '0.4'
-        >>> CSSBeautifier._tinycss2ParserFlag()
-        {'preserve_comments': True}
-
-        >>> original = tinycss2.VERSION
-        >>> tinycss2.VERSION = '0.5'
-        >>> CSSBeautifier._tinycss2ParserFlag()
-        {}
-
-        >>> tinycss2.VERSION = original  # remove side effect of doctest...
+        #>>> import tinycss2
+        #>>> original = tinycss2.VERSION
+        #
+        #>>> tinycss2.VERSION = '0.4'
+        #>>> CSSBeautifier._tinycss2ParserFlag()
+        #{'preserve_comments': True}
+        #
+        #>>> tinycss2.VERSION = '0.5'
+        #>>> CSSBeautifier._tinycss2ParserFlag()
+        #{}
+        #
+        #>>> tinycss2.VERSION = original  # remove side effect of doctest...
         """
         LooseVersion = distutils.version.LooseVersion
-        if LooseVersion(tinycss2.VERSION) <= LooseVersion('0.4'):
-            return dict(preserve_comments=True)
+        if LooseVersion(tinycss2.VERSION) >= LooseVersion('0.5'):
+            return dict(skip_comments=False)
         else:
-            return {}
+            return dict(preserve_comments=True)
 
     @staticmethod
     def _foundSelector(node):
@@ -371,8 +370,6 @@ class CSSBeautifier(BeautifierBase):
         """
         text = decodeText(css)
         extra = cls._tinycss2ParserFlag()
-        #print(extra)
-        #print tinycss2.VERSION
         ast = tinycss2.parse_component_value_list(text, **extra)
         parsed = []
         for ast, isCSSRule in cls._getCSSObjects(ast):
