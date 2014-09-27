@@ -180,7 +180,7 @@ Python API
 ----------
 
 This module requires Python 2.6+ (should work for Python
-3.1 and 3.2 but was not tested).
+3.0 and 3.1 but was not tested).
 
 Pretty Print HTML
 *****************
