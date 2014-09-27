@@ -75,11 +75,14 @@ class JSBeautifier(BeautifierBase):
         >>> js = '''function myFunction() {
         ... document.getElementById("demo").innerHTML = "Paragraph changed.";
         ... }'''
+
+        >>> # test default indent of 2 spaces
         >>> print(JSBeautifier.beautify(js))
         function myFunction() {
           document.getElementById("demo").innerHTML = "Paragraph changed.";
         }
 
+        >>> # test indent of 4 spaces
         >>> print(JSBeautifier.beautify(js, 4))
         function myFunction() {
             document.getElementById("demo").innerHTML = "Paragraph changed.";

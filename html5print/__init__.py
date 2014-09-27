@@ -203,7 +203,13 @@ Create valid HTML5 document from HTML fragment:
 
 Testing
 -------
-The module uses `pytest <http://pytest.org/latest/>`_.
+The module uses `pytest <http://pytest.org/latest/>`_.  Use pip to install `pytest`.
+
+.. code-block:: sh
+
+    $ [sudo] pip install pytest
+
+Then run test as normal.
 
 .. code-block:: sh
 
