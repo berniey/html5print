@@ -34,18 +34,18 @@ class CSSBeautifier(BeautifierBase):
 
         :returns:    a dictionary objects with keywords for including comments
 
-        #>>> import tinycss2
-        #>>> original = tinycss2.VERSION
-        #
-        #>>> tinycss2.VERSION = '0.4'
-        #>>> CSSBeautifier._tinycss2ParserFlag()
-        #{'preserve_comments': True}
-        #
-        #>>> tinycss2.VERSION = '0.5'
-        #>>> CSSBeautifier._tinycss2ParserFlag()
-        #{}
-        #
-        #>>> tinycss2.VERSION = original  # remove side effect of doctest...
+        >>> import tinycss2
+        >>> original = tinycss2.VERSION
+
+        >>> tinycss2.VERSION = '0.4'
+        >>> CSSBeautifier._tinycss2ParserFlag()
+        {'preserve_comments': True}
+
+        >>> tinycss2.VERSION = '0.5'
+        >>> CSSBeautifier._tinycss2ParserFlag()
+        {'skip_comments': False}
+
+        >>> tinycss2.VERSION = original  # remove side effect of doctest...
         """
         LooseVersion = distutils.version.LooseVersion
         if LooseVersion(tinycss2.VERSION) >= LooseVersion('0.5'):
@@ -79,15 +79,22 @@ class CSSBeautifier(BeautifierBase):
         :returns:   serialized css selector
 
         >>> import tinycss2
+        >>> from distutils.version import LooseVersion
         >>> from html5print import CSSBeautifier
+
         >>> data = '.abc /* comment */ { margin:10px,20px; }'
-        >>> ast = tinycss2.parse_component_value_list(data, True)
+        >>> if LooseVersion(tinycss2.VERSION) >= LooseVersion('0.5'):
+        ...    extra = (False,)
+        ... else:
+        ...    extra = (True,)
+
+        >>> ast = tinycss2.parse_component_value_list(data, *extra)
         >>> print('"{0}"'.format(CSSBeautifier._serializeSelector(ast)))
         ".abc /* comment */ "
 
         >>> # multiple selectors
         >>> data = 'p, h1, h2 /* comment */ { margin:10px,20px; }'
-        >>> ast = tinycss2.parse_component_value_list(data, True)
+        >>> ast = tinycss2.parse_component_value_list(data, *extra)
         >>> print('"{0}"'.format(CSSBeautifier._serializeSelector(ast)))
         "p, h1, h2 /* comment */ "
         """
@@ -176,11 +183,17 @@ class CSSBeautifier(BeautifierBase):
         :returns:       seialized declaration
 
         >>> import tinycss2
+        >>> from distutils.version import LooseVersion
         >>> from html5print import CSSBeautifier
+
+        >>> if LooseVersion(tinycss2.VERSION) >= LooseVersion('0.5'):
+        ...    extra = (False,)
+        ... else:
+        ...    extra = (True,)
 
         >>> # css with comments and random space between elements
         >>> data = '.abc /* comment */ { margin:10px 20px; /* hello */ }'
-        >>> ast = tinycss2.parse_component_value_list(data, True)
+        >>> ast = tinycss2.parse_component_value_list(data, *extra)
         >>> print("'{0}'".format(CSSBeautifier._serializeDeclarations(ast[-1])))
         '  margin              : 10px 20px; /* hello */'
 
@@ -191,26 +204,26 @@ class CSSBeautifier(BeautifierBase):
 
         >>> # css with no spaces between elements
         >>> data = '.abc/*comment*/{margin:10px 20px;}'
-        >>> ast = tinycss2.parse_component_value_list(data, True)
+        >>> ast = tinycss2.parse_component_value_list(data, *extra)
         >>> print("'{0}'".format(CSSBeautifier._serializeDeclarations(ast[-1])))
         '  margin              : 10px 20px;'
 
         >>> # css with random spaces between elements
         >>> data = '.abc /* comment */ { margin:10px 20px; }'
-        >>> ast = tinycss2.parse_component_value_list(data, True)
+        >>> ast = tinycss2.parse_component_value_list(data, *extra)
         >>> print("'{0}'".format(CSSBeautifier._serializeDeclarations(ast[-1])))
         '  margin              : 10px 20px;'
 
         >>> # css with two declarations
         >>> data = '.abc /* comment */ { margin:10px 20px; '
         >>> data += os.linesep + ' color: red; }'
-        >>> ast = tinycss2.parse_component_value_list(data, True)
+        >>> ast = tinycss2.parse_component_value_list(data, *extra)
         >>> print("'{0}'".format(CSSBeautifier._serializeDeclarations(ast[-1])))
         '  margin              : 10px 20px;
           color               : red;'
 
         >>> data = 'a.red:visited { color: #FF0000; }'
-        >>> ast = tinycss2.parse_component_value_list(data, True)
+        >>> ast = tinycss2.parse_component_value_list(data, *extra)
         >>> print("'{0}'".format(CSSBeautifier._serializeDeclarations(ast[-1])))
         '  color               : #FF0000;'
 
@@ -251,10 +264,16 @@ class CSSBeautifier(BeautifierBase):
         :returns:       seialized CSS rule
 
         >>> import tinycss2
+        >>> from distutils.version import LooseVersion
         >>> from html5print import CSSBeautifier
 
+        >>> if LooseVersion(tinycss2.VERSION) >= LooseVersion('0.5'):
+        ...    extra = (False,)
+        ... else:
+        ...    extra = (True,)
+
         >>> data = '.abc /* comment */ { margin:10px 20px; /* hello */ }'
-        >>> ast = tinycss2.parse_component_value_list(data, True)
+        >>> ast = tinycss2.parse_component_value_list(data, *extra)
         >>> print(CSSBeautifier._serializeCSSRule(ast))
         .abc /* comment */ {
           margin              : 10px 20px; /* hello */
@@ -262,7 +281,7 @@ class CSSBeautifier(BeautifierBase):
 
         >>> # CSS rule with ':'
         >>> data = 'a.red:visited { color: #FF0000; }'
-        >>> ast = tinycss2.parse_component_value_list(data, True)
+        >>> ast = tinycss2.parse_component_value_list(data, *extra)
         >>> print(CSSBeautifier._serializeCSSRule(ast))
         a.red:visited {
           color               : #FF0000;
