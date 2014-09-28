@@ -29,6 +29,8 @@ _classifiers = '''
         Programming Language :: Python :: 3.2
         Programming Language :: Python :: 3.3
         Programming Language :: Python :: 3.4
+        Programming Language :: Python :: Implementation :: CPython
+        Programming Language :: Python :: Implementation :: PyPy
         Topic :: Software Development :: Libraries
         Topic :: System
         Topic :: Text Processing
@@ -41,7 +43,7 @@ _classifiers = [s.strip() for s in _classifiers.splitlines() if s.strip()]
 
 filename = 'README.rst'
 encoding = 'utf-8'
-if sys.version >= '3':
+if sys.version_info[0] >= 3:
     with open(filename, 'r', encoding=encoding) as fh:
         docstring = fh.read()
     packages = ['html5print']
@@ -58,7 +60,7 @@ with open('requirements.txt') as fh:
 class PyTest(TestCommand):
     user_options = [('pytest-args=', 'a',
                      '--doctest-module --ignore=setup.py -m "not remote"')]
-    if sys.version < '3':
+    if sys.version_info[0] < 3:
         temp = []
         for t in user_options:
             temp.append(tuple([bytes(i) for i in t]))

@@ -17,7 +17,7 @@ def decodeText_func():
 @pytest.fixture
 def unicode_func():
     import sys
-    if sys.version > '3':
+    if sys.version_info[0] > 3:
         return str
     else:
         return unicode

@@ -56,7 +56,7 @@ def html_fragment():
 
 @pytest.fixture
 def unicode_type():
-    if sys.version < '3':
+    if sys.version_info[0] < 3:
         return unicode
     else:
         return str
