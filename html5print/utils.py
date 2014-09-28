@@ -50,7 +50,7 @@ def decodeText(text, encoding=None):
     >>> output = decodeText(s)
     >>> print(output)
     Hello! 您好! こんにちは! halló!
-    >>> if sys.version_info.major >= 3:
+    >>> if sys.version_info[0] >= 3:
     ...    unicode = str
     >>> isinstance(output, unicode)
     True
@@ -96,19 +96,19 @@ def isUnicode(text):
                   | **False** otherwise
 
     >>> import sys
-    >>> if sys.version_info.major >= 3:
+    >>> if sys.version_info[0] >= 3:
     ...     isUnicode(bytes('hello', 'ascii'))
     ... else:
     ...     isUnicode(bytes('hello'))
     False
 
     >>> import sys
-    >>> if sys.version_info.major >= 3:
+    >>> if sys.version_info[0] >= 3:
     ...     unicode = str
     >>> isUnicode(unicode('hello'))
     True
     """
-    if sys.version_info.major >= 3:
+    if sys.version_info[0] >= 3:
         if isinstance(text, str):
             return True
         else:
