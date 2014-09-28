@@ -33,7 +33,7 @@ with two parts:
 .. image:: https://travis-ci.org/berniey/html5print.png?branch=master
    :target: https://travis-ci.org/berniey/html5print
 
-.. image:: https://pypip.in/version/html5print/badge.svg?text=version
+.. image:: https://pypip.in/version/html5print/badge.svg
    :target: https://pypi.python.org/pypi/html5print/
    :alt: Latest Version
 

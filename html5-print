@@ -26,7 +26,7 @@ import argparse
 import codecs
 import textwrap
 import warnings
-if sys.version >= '3':
+if sys.version_info.major >= 3:
     from urllib.parse import urlparse
 else:
     from urlparse import urlparse
@@ -179,7 +179,7 @@ class Main(object):
 
         parsed = urlparse(filename)
         if parsed.scheme in ('', 'file'):
-            if sys.version >= '3':
+            if sys.version_info.major >= 3:
                 data = self.py3GetData(filename)
             else:
                 data = self.py2GetData(filename)
@@ -222,7 +222,7 @@ class Main(object):
         """write `data` to `filename`, if 'filename` is '', write to stdout
         :return :       None
         """
-        if sys.version >= '3':
+        if sys.version_info.major >= 3:
             self.py3WriteData(data, filename)
         else:
             self.py2WriteData(data, filename)
