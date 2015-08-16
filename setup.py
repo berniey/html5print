@@ -6,7 +6,7 @@ import codecs
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
-__version__ = '0.1'
+__version__ = '0.1.1'
 __author__ = 'Bernard Yue'
 
 _classifiers = '''

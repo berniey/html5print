@@ -33,11 +33,11 @@ with two parts:
 .. image:: https://travis-ci.org/berniey/html5print.png?branch=master
    :target: https://travis-ci.org/berniey/html5print
 
-.. image:: https://pypip.in/version/html5print/badge.svg
+.. image:: https://img.shields.io/badge/version-latest-brightgreen.svg?style=plastic
    :target: https://pypi.python.org/pypi/html5print/
    :alt: Latest Version
 
-.. image:: https://raw.githubusercontent.com/berniey/html5print/master/docs/_static/doc-0.1-brightgreen.png
+.. image:: https://img.shields.io/badge/doc-0.1.1-brightgreen.svg?style=plastic
    :target: https://pythonhosted.org/html5print/
    :alt: Documentation
 

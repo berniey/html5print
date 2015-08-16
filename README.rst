@@ -13,7 +13,7 @@ with two parts:
    :target: https://pypi.python.org/pypi/html5print/
    :alt: Latest Version
 
-.. image:: https://raw.githubusercontent.com/berniey/html5print/master/docs/_static/doc-0.1-brightgreen.png
+.. image:: https://img.shields.io/badge/doc-0.1.1-brightgreen.svg?style=plastic
    :target: https://pythonhosted.org/html5print/
    :alt: Documentation
 
@@ -69,7 +69,7 @@ Synopsis
                         [-t {html,js,css}] [-v]
                         infile
 
-    Beautify HTML5, CSS, JavaScript - Version 0.1 (By Bernard Yue)
+    Beautify HTML5, CSS, JavaScript - Version 0.1.1 (By Bernard Yue)
     This tool reformat the input and return a beautified version,
     in unicode.
 
@@ -276,8 +276,8 @@ Then run test as normal.
 
 .. code-block:: sh
 
-    $ tar zxf html5print-0.1.tar.gz
-    $ cd html5print-0.1
+    $ tar zxf html5print-0.1.1.tar.gz
+    $ cd html5print-0.1.1
     $ python setup.py test
 
 
