@@ -135,29 +135,6 @@ class Main(object):
         """
         filetype = filetype.upper()
         text = self.read(infile)
-        text, detectedEncoding = html5print.decodeText(text, encoding)
-        if filetype == 'HTML':
-            output = self.beautifyHTML(text, indent, encoding, "html5")
-        elif filetype == 'CSS':
-            output = self.beautifyCSS(text, indent,
-                                      detectedEncoding) + os.linesep
-        else:
-            # javascript
-            output = self.beautifyJS(text, indent,
-                                     detectedEncoding) + os.linesep
-        self.write(outfile, output)
-
-    def process(self, filetype, infile, outfile, indent, encoding):
-        """main process workflow
-        :param filetype: type of file to parse (html, js or css)
-        :param infile:   name of input file, '-' for stdin
-        :param outfile:  name of output file, stdout if empty
-        :param indent:   width of an indent level
-        :param encoding: encoding of infile
-        :return :        None
-        """
-        filetype = filetype.upper()
-        text = self.read(infile)
         text = html5print.decodeText(text, encoding)
         if filetype == 'HTML':
             output = self.beautifyHTML(text, indent, encoding, "html5")

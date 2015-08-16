@@ -21,7 +21,7 @@ from .jsprint import JSBeautifier
 from .html5print import HTMLBeautifier
 from .utils import decodeText, isUnicode
 
-__version__ = '0.1'
+__version__ = '0.1.1'
 __author__ = 'Bernard Yue'
 __doc__ = """
 This tool pretty print your HTML, CSS and JavaScript file.  The package comes
