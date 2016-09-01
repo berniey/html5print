@@ -1,6 +1,7 @@
 Version 0.1.2
 =============
   - fix documentation
+  - drop support for python 3.2
 
 Version 0.1.1
 =============
