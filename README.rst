@@ -13,11 +13,15 @@ with two parts:
    :target: https://pypi.python.org/pypi/html5print/
    :alt: Latest Version
 
-.. image:: https://img.shields.io/badge/doc-0.1.1-brightgreen.svg?style=plastic
+.. image:: https://img.shields.io/badge/doc-0.1.2-brightgreen.svg?style=plastic
    :target: https://pythonhosted.org/html5print/
    :alt: Documentation
 
-.. image:: https://raw.githubusercontent.com/berniey/html5print/master/docs/_static/license.png
+.. image:: https://img.shields.io/badge/source-latest-blue.svg?style=plastic
+   :target: https://github.com/berniey/html5print
+   :alt: Source Code
+
+.. image:: https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=plastic
    :target: https://raw.githubusercontent.com/berniey/html5print/master/LICENSE
    :alt: License
 
@@ -69,7 +73,7 @@ Synopsis
                         [-t {html,js,css}] [-v]
                         infile
 
-    Beautify HTML5, CSS, JavaScript - Version 0.1.1 (By Bernard Yue)
+    Beautify HTML5, CSS, JavaScript - Version 0.1.2 (By Bernard Yue)
     This tool reformat the input and return a beautified version,
     in unicode.
 
@@ -266,19 +270,23 @@ Pretty Print JavaScript
 
 Testing
 -------
-The module uses `pytest <http://pytest.org/latest/>`_.  Use pip to install `pytest`.
+The module uses `pytest <http://pytest.org/latest/>`_.  Use pip to install `pytest`
+if you do not have it installed.
 
 .. code-block:: sh
 
     $ [sudo] pip install pytest
 
-Then run test as normal.
+Then checkout source code and run test as normal.
 
 .. code-block:: sh
 
-    $ tar zxf html5print-0.1.1.tar.gz
-    $ cd html5print-0.1.1
+    $ git clone https://github.com/berniey/html5print.git
     $ python setup.py test
+
+You are encouraged to use `virtualenv <https://virtualenv.pypa.io/en/stable/>`_
+and `virtualenvwrapper <https://virtualenvwrapper.readthedocs.io/en/latest/>`_
+for to avoid changing your currently operating environment.
 
 
 License

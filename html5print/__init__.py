@@ -21,7 +21,7 @@ from .jsprint import JSBeautifier
 from .html5print import HTMLBeautifier
 from .utils import decodeText, isUnicode
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 __author__ = 'Bernard Yue'
 __doc__ = """
 This tool pretty print your HTML, CSS and JavaScript file.  The package comes
@@ -37,11 +37,15 @@ with two parts:
    :target: https://pypi.python.org/pypi/html5print/
    :alt: Latest Version
 
-.. image:: https://img.shields.io/badge/doc-0.1.1-brightgreen.svg?style=plastic
+.. image:: https://img.shields.io/badge/doc-{0}-brightgreen.svg?style=plastic
    :target: https://pythonhosted.org/html5print/
    :alt: Documentation
 
-.. image:: https://raw.githubusercontent.com/berniey/html5print/master/docs/_static/license.png
+.. image:: https://img.shields.io/badge/source-latest-blue.svg?style=plastic
+   :target: https://github.com/berniey/html5print
+   :alt: Source Code
+
+.. image:: https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=plastic
    :target: https://raw.githubusercontent.com/berniey/html5print/master/LICENSE
    :alt: License
 
@@ -93,7 +97,7 @@ Synopsis
                         [-t {{html,js,css}}] [-v]
                         infile
 
-    Beautify HTML5, CSS, JavaScript - Version {0} (By {1})
+    Beautify HTML5, CSS, JavaScript - Version {1} (By {2})
     This tool reformat the input and return a beautified version,
     in unicode.
 
@@ -225,6 +229,6 @@ This module is distributed under Apache License Version 2.0.
 
 Python API
 ----------
-""".format(__version__, __author__)
+""".format(__version__, __version__, __author__)
 __all__ = ['CSSBeautifier', 'JSBeautifier', 'HTMLBeautifier', 'decodeText',
            'isUnicode']
