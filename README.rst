@@ -287,7 +287,7 @@ Then checkout source code and run test as normal.
 
 You are encouraged to use `virtualenv <https://virtualenv.pypa.io/en/stable/>`_
 and `virtualenvwrapper <https://virtualenvwrapper.readthedocs.io/en/latest/>`_
-for to avoid changing your currently operating environment.
+to avoid changing your currently operating environment.
 
 
 License
