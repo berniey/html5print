@@ -213,13 +213,16 @@ The module uses `pytest <http://pytest.org/latest/>`_.  Use pip to install `pyte
 
     $ [sudo] pip install pytest
 
-Then run test as normal.
+Then checkout source code and run test as normal.
 
 .. code-block:: sh
 
-    $ tar zxf html5print-{0}.tar.gz
-    $ cd html5print-{0}
+    $ git clone https://github.com/berniey/html5print.git
     $ python setup.py test
+
+You are encouraged to use `virtualenv <https://virtualenv.pypa.io/en/stable/>`_
+and `virtualenvwrapper <https://virtualenvwrapper.readthedocs.io/en/latest/>`_
+for to avoid changing your currently operating environment.
 
 
 License

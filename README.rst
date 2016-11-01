@@ -51,6 +51,7 @@ Installation
 
     $ [sudo] pip install html5print
 
+
 Uninstallation
 --------------
 
