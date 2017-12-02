@@ -9,3 +9,4 @@ build
 docs/_build
 MANIFEST
 html5print.egg-info
+.cache
