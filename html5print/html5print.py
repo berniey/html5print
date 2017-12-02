@@ -63,6 +63,21 @@ class HTMLBeautifier(BeautifierBase):
         </html>
         <BLANKLINE>
 
+        >>> # pretty print HTML
+        >>> from html5print import HTMLBeautifier
+        >>> html = '<script type="text/javascript">switch (1 = 2) {case 1:return 1;}</script>'
+        >>> print(HTMLBeautifier.beautify(html))
+        <html>
+          <head>
+            <script type="text/javascript">
+           switch (1 = 2) {case 1:return 1;}
+            </script>
+          </head>
+          <body>
+          </body>
+        </html>
+        <BLANKLINE>
+
         >>> # pretty print HTML with embedded CSS and Javascript
         >>> from html5print import HTMLBeautifier
         >>> html = '''<html><head><title>Testing</title>
@@ -108,7 +123,10 @@ class HTMLBeautifier(BeautifierBase):
         soup = bs4.BeautifulSoup(html, 'html5lib')
         html = soup.prettify(formatter=formatter)
         html = cls._prettifyWithIndent(html, indent)
-        html = JSBeautifier.beautifyTextInHTML(html, indent, encoding)
+        try:
+            html = JSBeautifier.beautifyTextInHTML(html, indent, encoding)
+        except:
+            pass
         html = CSSBeautifier.beautifyTextInHTML(html, indent, encoding)
         return html
 
