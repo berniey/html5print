@@ -123,7 +123,10 @@ class HTMLBeautifier(BeautifierBase):
         soup = bs4.BeautifulSoup(html, 'html5lib')
         html = soup.prettify(formatter=formatter)
         html = cls._prettifyWithIndent(html, indent)
-        html = JSBeautifier.beautifyTextInHTML(html, indent, encoding)
+        try:
+            html = JSBeautifier.beautifyTextInHTML(html, indent, encoding)
+        except:
+            pass
         html = CSSBeautifier.beautifyTextInHTML(html, indent, encoding)
         return html
 
