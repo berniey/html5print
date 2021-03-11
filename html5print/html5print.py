@@ -35,7 +35,7 @@ class HTMLBeautifier(BeautifierBase):
     ignoreTags = ['style', 'script']
 
     @classmethod
-    def beautify(cls, html, indent=2, encoding=None, formatter="html5"):
+    def beautify(cls, html, indent=2, encoding=None, formatter="html5", dowrap=True):
         """Pretty print html with indentation of `indent` per level
 
         :param html:      html as string
@@ -106,7 +106,11 @@ class HTMLBeautifier(BeautifierBase):
         <BLANKLINE>
         """
         soup = bs4.BeautifulSoup(html, 'html5lib')
-        html = soup.prettify(formatter=formatter)
+        if dowrap:
+            html = soup.prettify(formatter=formatter)
+        else:
+            html = soup.body.prettify(formatter=formatter).replace('<body>', '').replace('</body>', '').strip()
+
         html = cls._prettifyWithIndent(html, indent)
         html = JSBeautifier.beautifyTextInHTML(html, indent, encoding)
         html = CSSBeautifier.beautifyTextInHTML(html, indent, encoding)
